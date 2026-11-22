@@ -1,0 +1,9 @@
+{
+  "name": "Shadowmon Digivice",
+  "short_name": "Digivice",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#080c16",
+  "theme_color": "#090d18",
+  "description": "A personal AI-style Digimon companion prototype."
+}

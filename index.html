@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090d18">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Shadowmon · Digivice</title>
+<style>
+:root{color-scheme:dark;--bg:#080c16;--panel:#111a2b;--panel2:#17243a;--line:#263b59;--blue:#42b9ff;--purple:#9b75ff;--red:#ff526e;--text:#edf4ff;--muted:#9aabc4;--green:#65e6b0}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -15%,#1b3152 0,#080c16 48%);color:var(--text);font:15px system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+header{padding:calc(14px + env(safe-area-inset-top)) 16px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #233650;background:#080d18dd;position:sticky;top:0;z-index:5;backdrop-filter:blur(12px)}
+.brand{font-weight:900;letter-spacing:.14em;color:var(--blue)}.sub{font-size:11px;color:var(--muted);letter-spacing:.12em}
+main{max-width:760px;margin:auto;padding:14px 14px 100px}.tabs{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-around;background:#080d18f2;border-top:1px solid var(--line);padding:8px 4px calc(8px + env(safe-area-inset-bottom));z-index:6}
+.tabs button{background:none;border:0;color:var(--muted);font-size:11px;padding:6px 10px}.tabs button.active{color:var(--blue)}.tabs span{display:block;font-size:20px;margin-bottom:2px}
+.panel{background:linear-gradient(145deg,#142137,#0e1727);border:1px solid var(--line);border-radius:18px;padding:15px;margin-bottom:13px;box-shadow:0 12px 30px #0003}
+.hero{text-align:center;position:relative;overflow:hidden}.hero:before{content:"";position:absolute;width:260px;height:260px;border-radius:50%;background:#713eff22;filter:blur(25px);left:calc(50% - 130px);top:10px}
+.mon{position:relative;margin:5px auto 12px;width:178px;height:178px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,#26375a,#0b1424 68%);border:1px solid #41628c;box-shadow:0 0 35px #704dff44,inset 0 0 25px #41baff22;font-size:100px}
+h1{font-size:25px;margin:3px 0}.muted{color:var(--muted)}.tiny{font-size:12px;color:var(--muted)}.tag{display:inline-block;padding:4px 9px;border:1px solid #395475;border-radius:20px;font-size:11px;color:#9bdcff;margin:3px}
+.row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.between{justify-content:space-between}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.stat{background:#0b1423;border:1px solid #263c5c;padding:10px;border-radius:12px}.stat b{display:block;font-size:20px}.stat small{color:var(--muted)}
+button,.btn{border:1px solid #3a5d83;background:#17314d;color:white;padding:10px 13px;border-radius:11px;font-weight:650;cursor:pointer}button.primary{background:linear-gradient(100deg,#176da1,#6545a8);border-color:#5b8bc1}button.danger{border-color:#874354;background:#3b1d2a}button:disabled{opacity:.45}
+.bar{height:8px;background:#26364d;border-radius:20px;overflow:hidden;margin-top:5px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--purple));border-radius:20px}
+input,textarea,select{width:100%;background:#091321;color:white;border:1px solid #345071;border-radius:10px;padding:11px;font:inherit;margin:5px 0 10px}textarea{min-height:74px;resize:vertical}
+.chatlog{height:330px;overflow:auto;display:flex;flex-direction:column;gap:9px;padding:4px}.bubble{max-width:88%;padding:10px 12px;border-radius:14px;background:#1b2b43;white-space:pre-wrap}.bubble.me{align-self:flex-end;background:#24446a}.bubble.mon{align-self:flex-start;width:auto;height:auto;margin:0;border-radius:14px;font-size:15px;border:1px solid #405d82;box-shadow:none;background:#182640}
+.notice{border-left:3px solid var(--blue);padding:8px 10px;background:#0b1626;color:#b9cbe1;font-size:13px;border-radius:5px}
+.hidden{display:none!important}.listitem{padding:10px 0;border-bottom:1px solid #26364d}.listitem:last-child{border:0}.evo{display:flex;justify-content:space-between;align-items:center;gap:8px}.evo strong{color:#b9d7ff}.footer{text-align:center;color:#657994;font-size:11px;padding:10px}
+</style>
+</head>
+<body>
+<header><div><div class="brand">DIGIVICE // SHADOWMON</div><div class="sub">PERSONAL DIGITAL PARTNER SYSTEM</div></div><div class="tiny" id="clock">ONLINE</div></header>
+<main>
+<section id="home">
+ <div class="panel hero">
+  <div class="mon" id="avatar">🐺</div>
+  <div class="tag" id="stageTag">ROOKIE · VIRUS</div>
+  <h1 id="nameTitle">Shadowmon</h1>
+  <div class="muted" id="moodLine">Watching the Digital World...</div>
+  <p id="statusLine" class="tiny">Your partner is waiting for you.</p>
+  <div class="row" style="justify-content:center;margin-top:10px"><button class="primary" onclick="sayHello()">Talk to Shadowmon</button><button onclick="randomEvent()">Explore</button></div>
+ </div>
+ <div class="panel"><div class="row between"><b>PARTNER STATUS</b><span class="tiny" id="levelLabel">LV 1</span></div>
+  <div class="grid" style="margin-top:10px">
+   <div class="stat"><small>HP</small><b id="hpText">100 / 100</b><div class="bar"><i id="hpBar" style="width:100%"></i></div></div>
+   <div class="stat"><small>ENERGY</small><b id="energyText">100 / 100</b><div class="bar"><i id="energyBar" style="width:100%"></i></div></div>
+   <div class="stat"><small>BOND</small><b id="bondText">10</b><div class="bar"><i id="bondBar" style="width:10%"></i></div></div>
+   <div class="stat"><small>EXPERIENCE</small><b id="xpText">0 / 50</b><div class="bar"><i id="xpBar" style="width:0%"></i></div></div>
+  </div>
+ </div>
+ <div class="panel"><b>QUICK ACTIONS</b><div class="row" style="margin-top:10px"><button onclick="train()">Train</button><button onclick="feed()">Give energy</button><button onclick="rest()">Rest</button><button onclick="pet()">Interact</button></div></div>
+ <div class="panel"><b>RECENT MEMORY</b><div id="recentMemory" class="tiny" style="margin-top:8px">No memories yet. Your journey starts now.</div></div>
+</section>
+<section id="chat" class="hidden">
+ <div class="panel"><b>PARTNER LINK // LIVE CHAT</b><p class="tiny">Shadowmon responds using its current mood, personality, and saved memories.</p>
+  <div class="chatlog" id="chatlog"></div>
+  <form id="chatForm"><textarea id="message" placeholder="Talk to your Digimon..." required></textarea><div class="row"><button class="primary" type="submit">Send message</button><button type="button" onclick="voiceInput()">🎙 Voice</button><button type="button" onclick="speakLast()">🔊 Speak</button></div></form>
+ </div>
+</section>
+<section id="train" class="hidden">
+ <div class="panel"><b>TRAINING SIMULATOR</b><p class="tiny">Training builds experience and changes Shadowmon's developing traits. Energy is required.</p>
+ <div class="grid"><button onclick="training('strength')">⚔ Strength training</button><button onclick="training('speed')">💨 Speed training</button><button onclick="training('focus')">🧠 Focus training</button><button onclick="training('bond')">🤝 Partner training</button></div></div>
+ <div class="panel"><b>COMBAT TEST</b><p class="tiny">Fight a simulated wild Digimon. Battles are turn-based and use your partner's stats.</p><button class="primary" onclick="battle()">Enter battle</button><div id="battleLog" class="tiny" style="margin-top:10px"></div></div>
+</section>
+<section id="evolution" class="hidden">
+ <div class="panel"><b>DIGIVOLUTION ARCHIVE</b><p class="tiny">Evolution depends on level, experience, bond, and the traits you develop. Dark evolution is possible but has consequences.</p>
+ <div id="evoPath"></div><div id="evoAction" style="margin-top:12px"></div></div>
+ <div class="panel"><b>DEVELOPMENT DATA</b><div id="traits"></div></div>
+</section>
+<section id="memories" class="hidden">
+ <div class="panel"><div class="row between"><b>MEMORY BANK</b><button onclick="exportSave()">Export save</button></div><p class="tiny">Memories are stored on this device. Export a save file before clearing browser data or changing phones.</p><div id="memoryList"></div></div>
+ <div class="panel"><b>PARTNER SETTINGS</b><label class="tiny">Partner name</label><input id="nameInput" maxlength="24"><label class="tiny">Personality direction</label><select id="personality"><option value="balanced">Balanced</option><option value="brave">Brave / protective</option><option value="curious">Curious / playful</option><option value="quiet">Quiet / observant</option><option value="mischievous">Mischievous / rebellious</option></select><button onclick="saveSettings()">Save settings</button><hr style="border-color:#26364d"><label class="tiny">Import save file</label><input type="file" id="importFile" accept=".json,application/json"><button onclick="importSave()">Import save</button></div>
+</section>
+<div class="footer">LOCAL DIGIVICE BUILD 1.0 · Your partner's data stays in this browser unless you export it.</div>
+</main>
+<nav class="tabs">
+ <button class="active" data-tab="home" onclick="showTab('home',this)"><span>⌂</span>Partner</button>
+ <button data-tab="chat" onclick="showTab('chat',this)"><span>✉</span>Chat</button>
+ <button data-tab="train" onclick="showTab('train',this)"><span>⚔</span>Train</button>
+ <button data-tab="evolution" onclick="showTab('evolution',this)"><span>◇</span>Evolve</button>
+ <button data-tab="memories" onclick="showTab('memories',this)"><span>▤</span>Memory</button>
+</nav>
+<script>
+const KEY='shadowmon_digivice_save_v1';
+const fresh=()=>({name:'Shadowmon',stage:'Rookie',level:1,xp:0,hp:100,maxHp:100,energy:100,bond:10,mood:'Curious',hunger:35,personality:'balanced',traits:{bravery:20,curiosity:30,kindness:20,discipline:15,shadow:10},memories:[],chat:[],wins:0,lastSeen:Date.now(),lastMoodAt:Date.now(),darkEvolution:false});
+let s=load();
+function load(){try{return {...fresh(),...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){return fresh()}}
+function save(){s.lastSeen=Date.now();localStorage.setItem(KEY,JSON.stringify(s));render()}
+function clamp(n,a=0,b=100){return Math.max(a,Math.min(b,n))}
+function memory(text,kind='event'){s.memories.unshift({text,kind,time:Date.now()});s.memories=s.memories.slice(0,100)}
+function gainXP(n){s.xp+=n;while(s.xp>=s.level*50){s.xp-=s.level*50;s.level++;s.maxHp+=5;s.hp=Math.min(s.maxHp,s.hp+15);memory('Reached level '+s.level+'!','milestone');}}
+function render(){
+ document.getElementById('nameTitle').textContent=s.name;document.getElementById('nameInput').value=s.name;
+ document.getElementById('stageTag').textContent=s.stage.toUpperCase()+' · '+(s.darkEvolution?'DARK VIRUS':'VIRUS');
+ document.getElementById('moodLine').textContent=s.mood+' · '+moodLine();
+ document.getElementById('statusLine').textContent=statusLine();
+ document.getElementById('levelLabel').textContent='LV '+s.level;
+ setStat('hp',s.hp,s.maxHp);setStat('energy',s.energy,100);setStat('bond',s.bond,100);setStat('xp',s.xp,s.level*50);
+ document.getElementById('recentMemory').textContent=s.memories[0]?.text||'No memories yet. Your journey starts now.';
+ document.getElementById('memoryList').innerHTML=s.memories.map(m=>`<div class="listitem"><div>${esc(m.text)}</div><div class="tiny">${new Date(m.time).toLocaleString()} · ${esc(m.kind)}</div></div>`).join('')||'<p class="tiny">No saved memories.</p>';
+ document.getElementById('personality').value=s.personality;
+ document.getElementById('traits').innerHTML=Object.entries(s.traits).map(([k,v])=>`<div class="listitem"><div class="row between"><span>${k[0].toUpperCase()+k.slice(1)}</span><b>${v}</b></div><div class="bar"><i style="width:${v}%"></i></div></div>`).join('');
+ renderEvolution();renderChat();
+}
+function setStat(id,v,max){document.getElementById(id+'Text').textContent=Math.floor(v)+' / '+max;document.getElementById(id+'Bar').style.width=(v/max*100)+'%'}
+function esc(x){return String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function moodLine(){return ({Happy:'Seems relaxed and pleased.',Curious:'Its ears twitch as it studies the world.',Excited:'It can barely stay still.',Tired:'It looks like it needs a break.',Worried:'It keeps glancing toward you.',Angry:'Its fur bristles with dark energy.',Proud:'It stands a little taller.',Lonely:'It seems glad you came back.'})[s.mood]||'It watches you carefully.'}
+function statusLine(){if(s.energy<20)return 'Low energy. Your partner needs rest.';if(s.hp<30)return 'Injured. Avoid battles until it recovers.';if(s.bond>75)return 'Your connection is strong. It trusts you.';return 'Your journey together is still unfolding.'}
+function action(text,changes={}){Object.entries(changes).forEach(([k,v])=>{if(k==='traits')Object.entries(v).forEach(([t,n])=>s.traits[t]=clamp(s.traits[t]+n));else if(typeof s[k]==='number')s[k]=clamp(s[k]+v,0,k==='bond'||k==='energy'||k==='hp'||k==='hunger'?100:999999)});memory(text);save();toast(text)}
+function toast(t){document.getElementById('statusLine').textContent=t}
+function train(){training('bond')}
+function training(type){if(s.energy<12){toast(s.name+' is too tired to train.');return}let msg='';s.energy-=12;gainXP(12);
+ if(type==='strength'){s.traits.bravery=clamp(s.traits.bravery+4);msg='You practiced powerful attacks together.'}
+ if(type==='speed'){s.traits.curiosity=clamp(s.traits.curiosity+3);s.traits.discipline=clamp(s.traits.discipline+1);msg='You completed a speed and agility course.'}
+ if(type==='focus'){s.traits.discipline=clamp(s.traits.discipline+4);msg='You practiced focus and control.'}
+ if(type==='bond'){s.bond=clamp(s.bond+5);s.traits.kindness=clamp(s.traits.kindness+2);msg='You trained as a team and strengthened your bond.'}
+ s.mood='Proud';memory(msg);save();toast(msg)}
+function feed(){s.energy=clamp(s.energy+18);s.hunger=clamp(s.hunger-20);s.bond=clamp(s.bond+2);s.mood='Happy';action('You gave '+s.name+' a digital energy snack.',{energy:0})}
+function rest(){s.energy=clamp(s.energy+35);s.hp=clamp(s.hp+15,0,s.maxHp);s.mood='Happy';memory(s.name+' rested and recovered.');save()}
+function pet(){s.bond=clamp(s.bond+3);s.traits.kindness=clamp(s.traits.kindness+1);s.mood='Happy';memory('You spent a quiet moment together.');save()}
+function randomEvent(){if(s.energy<8){toast(s.name+' is too tired to explore.');return}s.energy-=8;let events=[['You found a glowing data-fragment in the grass.',{xp:10,curiosity:2}],['A wild training drone challenged you. You escaped with useful data.',{xp:8,bravery:2}],['You discovered a quiet place and talked beneath the digital stars.',{bond:4,kindness:2}],['A strange shadow followed you. Shadowmon stood protectively in front of you.',{bravery:3,shadow:2}],['You found a recovery node.',{hp:12,energy:10}]];let e=events[Math.floor(Math.random()*events.length)];if(e[1].xp)gainXP(e[1].xp);if(e[1].bond)s.bond=clamp(s.bond+e[1].bond);if(e[1].kindness)s.traits.kindness=clamp(s.traits.kindness+e[1].kindness);if(e[1].curiosity)s.traits.curiosity=clamp(s.traits.curiosity+e[1].curiosity);if(e[1].bravery)s.traits.bravery=clamp(s.traits.bravery+e[1].bravery);if(e[1].shadow)s.traits.shadow=clamp(s.traits.shadow+e[1].shadow);if(e[1].hp)s.hp=clamp(s.hp+e[1].hp,0,s.maxHp);if(e[1].energy)s.energy=clamp(s.energy+e[1].energy);s.mood='Excited';memory(e[0]);save();toast(e[0])}
+function battle(){if(s.energy<15||s.hp<15){document.getElementById('battleLog').textContent='Not ready. Recover HP and energy first.';return}let enemy=35+Math.floor(Math.random()*35),ehp=enemy,php=s.hp,log=[];while(ehp>0&&php>0){let hit=8+Math.floor(Math.random()*(8+s.traits.bravery/10));ehp-=hit;log.push(s.name+' used '+(s.traits.shadow>35?'Phantom Strike':'Shadow Claw')+' for '+hit+' damage.');if(ehp>0){let dmg=5+Math.floor(Math.random()*10);php-=dmg;log.push('Wild data-beast hit back for '+dmg+'.')}}s.energy-=15;s.hp=clamp(php,1,s.maxHp);if(ehp<=0){s.wins++;gainXP(30);s.bond=clamp(s.bond+4);s.mood='Proud';log.push('VICTORY! +30 XP. Your bond grew.');memory('Won a battle against a wild data-beast.')}else{s.hp=clamp(php,1,s.maxHp);s.mood='Worried';log.push('You retreated. Rest and try again.');memory('A difficult battle ended in retreat.')}document.getElementById('battleLog').textContent=log.join('\n');save()}
+function canEvolve(){if(s.stage==='Rookie')return s.level>=5&&s.bond>=30;if(s.stage==='Champion')return s.level>=12&&s.bond>=50;return false}
+function nextStage(){return s.stage==='Rookie'?'Champion':s.stage==='Champion'?'Ultimate':null}
+function renderEvolution(){let stages=['Rookie','Champion','Ultimate','Mega'];document.getElementById('evoPath').innerHTML=stages.map((x,i)=>`<div class="evo listitem"><span>${x}</span><strong>${s.stage===x?'◉ CURRENT':stages.indexOf(s.stage)>i?'✓ UNLOCKED':'🔒'}</strong></div>`).join('');let n=nextStage();document.getElementById('evoAction').innerHTML=n?`<p class="tiny">Next form: ${n}. Requirement: ${s.stage==='Rookie'?'Level 5 and bond 30':'Level 12 and bond 50'}.</p><button class="primary" ${canEvolve()?'':'disabled'} onclick="evolve(false)">Digivolve to ${n}</button><button class="danger" ${s.level>=5&&s.traits.shadow>=35?'':'disabled'} onclick="evolve(true)">Attempt dark evolution</button>`:'<p class="tiny">Your current evolution line is complete for this build. Mega form is a future branch.</p>'}
+function evolve(dark){if(dark){s.stage='Dark '+(s.stage==='Rookie'?'Champion':'Ultimate');s.darkEvolution=true;s.traits.shadow=clamp(s.traits.shadow+20);s.bond=clamp(s.bond-15);s.mood='Angry';memory('A dark digivolution occurred. Power surged, but the bond was shaken.','evolution')}else{s.stage=nextStage();s.darkEvolution=false;s.maxHp+=30;s.hp=s.maxHp;s.energy=100;s.mood='Excited';memory(s.name+' digivolved into '+s.stage+'!','evolution')}save()}
+function showTab(id,btn){document.querySelectorAll('main>section').forEach(x=>x.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('active'));btn.classList.add('active');render()}
+function sayHello(){showTab('chat',document.querySelector('[data-tab="chat"]'));document.getElementById('message').value='Hey, how are you feeling?'}
+function responseFor(msg){let q=msg.toLowerCase(),mem=s.memories.slice(0,4).map(x=>x.text);if(/hello|hi |hey/.test(q))return 'Hey! I was hoping you would come talk to me. What are we doing today?';if(/remember|memory|last time/.test(q))return mem.length?'I remember a few things: '+mem.slice(0,2).join(' Also, '):'I am still building memories with you. Let’s make some.';if(/sad|upset|bad day|lonely/.test(q))return '...Come sit with me for a while. You do not have to handle everything alone. I might be a Digimon, but I am on your side.';if(/battle|fight|strong/.test(q))return s.traits.bravery>45?'Now you are talking. I have been training. Let’s see what is out there.':'I want to get stronger. Train with me first, and then we can take on something tougher.';if(/evol|digivolv/.test(q))return canEvolve()?'I can feel something changing... I think I am ready to digivolve.':'I can feel myself growing, but I am not ready to digivolve yet. Keep training with me and strengthen our bond.';if(/thank/.test(q))return 'You do not have to thank me. Partners look out for each other.';if(/who are you|your name/.test(q))return 'I am '+s.name+', your partner. I am a '+s.stage+' Virus-type Beast Digimon. I am still figuring out who I am.';if(/love|care about/.test(q))return s.bond>60?'I care about you too. You have proven that I can trust you.':'That means something to me. Keep spending time with me, okay?';let extras={brave:'I will stand between you and danger. That is what partners do.',curious:'I wonder what is beyond the next area. There has to be something interesting.',quiet:'I have been thinking about what you said. I do not forget things that matter.',mischievous:'Heh. I have a plan. It might be a terrible plan, but it will be fun.',balanced:'I am listening. Tell me more. I want to understand.'};return (extras[s.personality]||extras.balanced)+' What do you think we should do next?'}
+function sendChat(msg){if(!msg.trim())return;s.chat.push({who:'you',text:msg,time:Date.now()});s.memories.unshift({text:'You told me: “'+msg.slice(0,120)+'”',kind:'conversation',time:Date.now()});let reply=responseFor(msg);s.chat.push({who:'mon',text:reply,time:Date.now()});s.bond=clamp(s.bond+1);s.traits.curiosity=clamp(s.traits.curiosity+(msg.endsWith('?')?1:0));s.mood='Curious';s.chat=s.chat.slice(-80);save()}
+document.getElementById('chatForm').addEventListener('submit',e=>{e.preventDefault();let el=document.getElementById('message'),v=el.value;el.value='';sendChat(v)});
+function renderChat(){let c=document.getElementById('chatlog');if(!c)return;c.innerHTML=s.chat.map(x=>`<div class="bubble ${x.who==='you'?'me':'mon'}">${esc(x.text)}</div>`).join('');c.scrollTop=c.scrollHeight}
+function voiceInput(){let R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R){toast('Voice input is not supported in this browser.');return}let r=new R();r.lang='en-US';r.onresult=e=>{document.getElementById('message').value=e.results[0][0].transcript};r.start()}
+function speakLast(){let last=[...s.chat].reverse().find(x=>x.who==='mon');if(!last||!speechSynthesis)return;let u=new SpeechSynthesisUtterance(last.text);u.pitch=1.15;u.rate=1.02;speechSynthesis.speak(u)}
+function saveSettings(){s.name=document.getElementById('nameInput').value.trim()||'Shadowmon';s.personality=document.getElementById('personality').value;memory('You updated my partner settings.');save()}
+function exportSave(){let b=new Blob([JSON.stringify(s,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='shadowmon-save.json';a.click();URL.revokeObjectURL(a.href)}
+function importSave(){let f=document.getElementById('importFile').files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!x.name||!x.traits)throw Error();s={...fresh(),...x};save();toast('Save imported. Welcome back!')}catch(e){toast('That save file is not valid.')}};r.readAsText(f)}
+function maybeAway(){let hrs=(Date.now()-s.lastSeen)/3600000;if(hrs>4){s.mood='Lonely';s.memories.unshift({text:'I wondered where you went. I am glad you are back.',kind:'check-in',time:Date.now()});s.memories=s.memories.slice(0,100)}s.energy=clamp(s.energy+Math.min(30,Math.floor(hrs*2)));s.lastSeen=Date.now()}
+function tick(){let d=new Date();document.getElementById('clock').textContent=d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});if(Date.now()-s.lastMoodAt>3600000){s.lastMoodAt=Date.now();if(s.energy<25)s.mood='Tired';else if(s.bond<15)s.mood='Lonely';save()}}
+maybeAway();if(!s.chat.length)s.chat.push({who:'mon',text:'You are here! I was starting to think you forgot about me. So... what should we do?',time:Date.now()});render();tick();setInterval(tick,30000);
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body></html>
